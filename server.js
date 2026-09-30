@@ -25,6 +25,20 @@ app.get("/products",async(req,res)=>{
     }
 })
 
+app.get("/products/:id",async(req,res)=>{
+    try{
+        let products= await readFile()
+        let {id}=req.params
+        id=Number(id)
+        let product=products.find((item)=>{
+            return item.id===id
+        })
+        res.json(product)
+    }catch(err){
+        console.log(err)
+    }
+})
+
 app.listen(port,()=>{
     console.log(`Listening on port ${port}`)
 })
