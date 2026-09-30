@@ -16,9 +16,17 @@ async function readFile(){
     }
 }
 
+async function readFileWithDelay(){
+    await new Promise((resolve,reject)=>{
+        setTimeout(resolve,1500)
+    })
+    let products=await readFile()
+    return products
+}
+
 app.get("/products",async(req,res)=>{
     try{
-        let products= await readFile()
+        let products= await readFileWithDelay()
         res.json(products)
     }catch(err){
         console.log(err)
@@ -27,7 +35,7 @@ app.get("/products",async(req,res)=>{
 
 app.get("/products/:id",async(req,res)=>{
     try{
-        let products= await readFile()
+        let products= await readFileWithDelay()
         let {id}=req.params
         id=Number(id)
         let product=products.find((item)=>{
