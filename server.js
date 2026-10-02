@@ -1,59 +1,13 @@
-const express=require('express')
-const { readProducts } = require("./database/productDatabase.js")
-const { getProducts, getProductById } = require("./services/productService.js")
+const express = require("express")
+const { getAllProducts, getProduct } = require("./controllers/productController.js")
+const { cacheMiddleware } = require("./middleware/cache.js")
 
-const app=express()
-const port=3000
+const app = express()
+const port = 3000
 
-const cache={}
+app.get("/products", cacheMiddleware, getAllProducts)
+app.get("/products/:id", cacheMiddleware, getProduct)
 
-
-async function readFileWithDelay(){
-    await new Promise((resolve,reject)=>{
-        setTimeout(resolve,1500)
-    })
-    let products=await readProducts()
-    return products
-}
-
-app.get("/products",(req,res)=>{
-    try{
-        let key=req.url;
-        let value=cache[key];
-        if(value){
-            return res.json(value)
-        }
-        let products= getProducts()
-        cache[key]=products
-        return res.json(products)
-    }catch(err){
-        console.log(err)
-    }
-})
-
-
-
-app.get("/products/:id",async(req,res)=>{
-    try{
-        let key=req.url;
-        let value=cache[key];
-
-        if(value){
-            return res.json(value)
-        }
-
-
-        let {id}=req.params
-
-        let product=getProductById(id)
-
-        cache[key]=product
-        return res.json(product)
-    }catch(err){
-        console.log(err)
-    }
-})
-
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
