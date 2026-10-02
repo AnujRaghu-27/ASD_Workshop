@@ -1,4 +1,4 @@
-const { getProducts, getProductById } = require("../services/productService.js")
+const { getProducts, getProductById, addProduct } = require("../services/productService.js")
 const { cache } = require("../middleware/cache.js")
 
 function getAllProducts(req, res) {
@@ -35,7 +35,20 @@ function getProduct(req, res) {
     }
 }
 
+function createProduct(req, res) {
+    try {
+        const product = req.body
+
+        const newProduct = addProduct(product)
+
+        return res.status(201).json(newProduct)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 module.exports = {
     getAllProducts,
-    getProduct
+    getProduct,
+    createProduct
 }

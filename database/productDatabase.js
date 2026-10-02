@@ -12,6 +12,20 @@ function readProducts(){
     }
 }
 
+function insertProduct(product) {
+    const products = readProducts()
+
+    products.push(product)
+
+    fs.writeFileSync(
+        pathToFile,
+        JSON.stringify(products, null, 2)
+    )
+
+    return product
+}
+
 module.exports={
-    readProducts
+    readProducts,
+    insertProduct
 }
