@@ -25,7 +25,31 @@ function insertProduct(product) {
     return product
 }
 
+function updateProduct(id, updatedProduct) {
+    const products = readProducts()
+
+    id = Number(id)
+
+    const index = products.findIndex((item) => {
+        return item.id === id
+    })
+
+    if (index === -1) {
+        return null
+    }
+
+    products[index] = updatedProduct
+
+    fs.writeFileSync(
+        pathToFile,
+        JSON.stringify(products, null, 2)
+    )
+
+    return updatedProduct
+}
+
 module.exports={
     readProducts,
-    insertProduct
+    insertProduct,
+    updateProduct
 }

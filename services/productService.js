@@ -1,4 +1,4 @@
-const { readProducts,insertProduct } = require("../database/productDatabase.js")
+const { readProducts,insertProduct, updateProduct } = require("../database/productDatabase.js")
 
 function getProducts() {
     return readProducts()
@@ -20,8 +20,13 @@ function addProduct(product) {
     return insertProduct(product)
 }
 
+function editProduct(id, product) {
+    return updateProduct(id, product)
+}
+
 module.exports = {
     getProducts,
     getProductById,
-    addProduct
+    addProduct,
+    editProduct
 }
