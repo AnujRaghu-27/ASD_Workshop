@@ -14,6 +14,9 @@ function getAllProducts(req, res) {
         return res.json(products)
     } catch (err) {
         console.log(err)
+        return res.status(500).json({
+            message: "Internal server error"
+        })
     }
 }
 
@@ -24,7 +27,13 @@ function getProduct(req, res) {
 
         const product = getProductById(id)
 
-        cache[key] ={
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found"
+            })
+        }
+
+        cache[key] = {
             data: product,
             time: Date.now()
         }
@@ -32,6 +41,9 @@ function getProduct(req, res) {
         return res.json(product)
     } catch (err) {
         console.log(err)
+        return res.status(500).json({
+            message: "Internal server error"
+        })
     }
 }
 
@@ -46,6 +58,9 @@ function createProduct(req, res) {
         return res.status(201).json(newProduct)
     } catch (err) {
         console.log(err)
+        return res.status(500).json({
+            message: "Internal server error"
+        })
     }
 }
 
@@ -67,6 +82,9 @@ function editProductById(req, res) {
         return res.json(updatedProduct)
     } catch (err) {
         console.log(err)
+        return res.status(500).json({
+            message: "Internal server error"
+        })
     }
 }
 
@@ -88,6 +106,9 @@ function patchProductById(req, res) {
         return res.json(updatedProduct)
     } catch (err) {
         console.log(err)
+        return res.status(500).json({
+            message: "Internal server error"
+        })
     }
 }
 
@@ -108,6 +129,9 @@ function deleteProductById(req, res) {
         return res.json(deletedProduct)
     } catch (err) {
         console.log(err)
+        return res.status(500).json({
+            message: "Internal server error"
+        })
     }
 }
 
