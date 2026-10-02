@@ -1,5 +1,6 @@
 const express=require('express')
-const { readProducts } = require("./database/database.js")
+const { readProducts } = require("./database/productDatabase.js")
+const { getProducts, getProductById } = require("./services/productService.js")
 
 const app=express()
 const port=3000
@@ -15,14 +16,14 @@ async function readFileWithDelay(){
     return products
 }
 
-app.get("/products",async(req,res)=>{
+app.get("/products",(req,res)=>{
     try{
         let key=req.url;
         let value=cache[key];
         if(value){
             return res.json(value)
         }
-        let products= await readFileWithDelay()
+        let products= getProducts()
         cache[key]=products
         return res.json(products)
     }catch(err){
@@ -36,15 +37,16 @@ app.get("/products/:id",async(req,res)=>{
     try{
         let key=req.url;
         let value=cache[key];
+
         if(value){
             return res.json(value)
         }
-        let products= await readFileWithDelay()
+
+
         let {id}=req.params
-        id=Number(id)
-        let product=products.find((item)=>{
-            return item.id===id
-        })
+
+        let product=getProductById(id)
+
         cache[key]=product
         return res.json(product)
     }catch(err){
