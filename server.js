@@ -1,28 +1,17 @@
 const express=require('express')
-const path=require('path')
-const fs=require("fs")
+const { readProducts } = require("./database/database.js")
 
 const app=express()
 const port=3000
 
 const cache={}
 
-const pathToFile=path.join(__dirname,"db.json")
-
-async function readFile(){
-    try{
-        let data= await fs.readFileSync(pathToFile,"utf-8")
-        return JSON.parse(data)
-    }catch(err){
-        console.log(err)
-    }
-}
 
 async function readFileWithDelay(){
     await new Promise((resolve,reject)=>{
         setTimeout(resolve,1500)
     })
-    let products=await readFile()
+    let products=await readProducts()
     return products
 }
 
