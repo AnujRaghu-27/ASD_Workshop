@@ -7,7 +7,10 @@ function getAllProducts(req, res) {
 
         const products = getProducts()
 
-        cache[key] = products
+        cache[key] = {
+            data: products,
+            time: Date.now()
+        }
         return res.json(products)
     } catch (err) {
         console.log(err)
@@ -21,7 +24,10 @@ function getProduct(req, res) {
 
         const product = getProductById(id)
 
-        cache[key] = product
+        cache[key] ={
+            data: product,
+            time: Date.now()
+        }
 
         return res.json(product)
     } catch (err) {
