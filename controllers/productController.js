@@ -1,4 +1,4 @@
-const { getProducts, getProductById, addProduct, editProduct, editProductPartially } = require("../services/productService.js")
+const { getProducts, getProductById, addProduct, editProduct, editProductPartially, removeProduct } = require("../services/productService.js")
 const { cache, clearCache } = require("../middleware/cache.js")
 
 function getAllProducts(req, res) {
@@ -91,10 +91,31 @@ function patchProductById(req, res) {
     }
 }
 
+function deleteProductById(req, res) {
+    try {
+        const { id } = req.params
+
+        const deletedProduct = removeProduct(id)
+
+        if (!deletedProduct) {
+            return res.status(404).json({
+                message: "Product not found"
+            })
+        }
+
+        clearCache()
+
+        return res.json(deletedProduct)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProduct,
     createProduct,
     editProductById,
-    patchProductById
+    patchProductById,
+    deleteProductById
 }

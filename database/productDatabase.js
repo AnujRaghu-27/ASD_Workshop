@@ -74,9 +74,35 @@ function patchProduct(id, updates) {
     return products[index]
 }
 
+function deleteProduct(id) {
+    const products = readProducts()
+
+    id = Number(id)
+
+    const index = products.findIndex((item) => {
+        return item.id === id
+    })
+
+    if (index === -1) {
+        return null
+    }
+
+    const deletedProduct = products[index]
+
+    products.splice(index, 1)
+
+    fs.writeFileSync(
+        pathToFile,
+        JSON.stringify(products, null, 2)
+    )
+
+    return deletedProduct
+}
+
 module.exports={
     readProducts,
     insertProduct,
     updateProduct,
-    patchProduct
+    patchProduct,
+    deleteProduct
 }

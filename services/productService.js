@@ -1,4 +1,4 @@
-const { readProducts,insertProduct, updateProduct, patchProduct } = require("../database/productDatabase.js")
+const { readProducts,insertProduct, updateProduct, patchProduct, deleteProduct } = require("../database/productDatabase.js")
 
 function getProducts() {
     return readProducts()
@@ -28,10 +28,15 @@ function editProductPartially(id, updates) {
     return patchProduct(id, updates)
 }
 
+function removeProduct(id) {
+    return deleteProduct(id)
+}
+
 module.exports = {
     getProducts,
     getProductById,
     addProduct,
     editProduct,
-    editProductPartially
+    editProductPartially,
+    removeProduct
 }
