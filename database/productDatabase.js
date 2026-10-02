@@ -48,8 +48,35 @@ function updateProduct(id, updatedProduct) {
     return updatedProduct
 }
 
+function patchProduct(id, updates) {
+    const products = readProducts()
+
+    id = Number(id)
+
+    const index = products.findIndex((item) => {
+        return item.id === id
+    })
+
+    if (index === -1) {
+        return null
+    }
+
+    products[index] = {
+        ...products[index],
+        ...updates
+    }
+
+    fs.writeFileSync(
+        pathToFile,
+        JSON.stringify(products, null, 2)
+    )
+
+    return products[index]
+}
+
 module.exports={
     readProducts,
     insertProduct,
-    updateProduct
+    updateProduct,
+    patchProduct
 }
